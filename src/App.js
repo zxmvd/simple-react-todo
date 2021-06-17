@@ -41,6 +41,15 @@ export default class App extends Component {
     });
   };
 
+  extractPoint = (str) =>{
+    let taskObj = {name:'', points:0}
+    let inputArr = str.split('')
+    let number = inputArr.filter(i=>typeof(+i)==='number')
+    const inputName = str.slice(0, inputArr.indexOf(number[0]).toString())
+    taskObj.name = inputName
+    taskObj.points = + number.join('')
+    return taskObj
+  }
 
 
   render() {
