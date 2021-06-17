@@ -14,6 +14,7 @@ import './App.css';
 export default class App extends Component {
   state = Object.assign({
       newTask: '',
+      newPoint: 0,
       tasks: []
   }, this.props.initialState);
 
@@ -27,9 +28,9 @@ export default class App extends Component {
     event.preventDefault();
     const newTasks = [
       ...this.state.tasks,
-      { name: this.state.newTask }
-    ];
-    this.setState({ tasks: newTasks, newTask: '' });
+      { name: this.state.newTask, points: this.state.newPoint }
+    ].sort((a, b)=>b.points-a.points);
+    this.setState({ tasks: newTasks, newTask: '', newPoint:0 });
   };
 
   deleteItem = index => event => {
@@ -40,7 +41,11 @@ export default class App extends Component {
     });
   };
 
+
+
   render() {
+
+
     return (
       <div className="App">
         <header className="App-header">
@@ -52,6 +57,13 @@ export default class App extends Component {
             label="Name"
             value={this.state.newTask}
             onChange={this.handleChange('newTask')}
+          />
+          <TextField
+            id="point"
+            label="Point"
+            type="number"
+            value={this.state.newPoint}
+            onChange={this.handleChange('newPoint')}
           />
           <Button type="submit" aria-label="Add" color="primary">
             <AddIcon /> Add
@@ -66,6 +78,7 @@ export default class App extends Component {
                 <div key={i} >
                   <ListItem button>
                     <ListItemText primary={task.name} />
+                    <ListItemText primary={`${task.points} Points Importance`}/>
                     <ListItemSecondaryAction>
                       <IconButton
                         aria-label="Delete"
