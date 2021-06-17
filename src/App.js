@@ -75,7 +75,7 @@ export default class App extends Component {
           <Grid item xs={6}>
             <List component="nav">
               {this.state.tasks.map((task, i) =>
-                <div key={i} >
+                <div key={i} className={task.points>10? "critical":"normal"}>
                   <ListItem button>
                     <ListItemText primary={task.name} />
                     <ListItemText primary={`${task.points} Points Importance`}/>
