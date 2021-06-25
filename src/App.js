@@ -3,7 +3,6 @@ import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import AddIcon from '@material-ui/icons/Add';
 import DeleteIcon from '@material-ui/icons/Delete';
-import EditIcon from '@material-ui/icons/Edit';
 import Grid from '@material-ui/core/Grid';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
@@ -19,7 +18,6 @@ export default class App extends Component {
       newTask: '',
       newPoint: 0,
       tasks: [],
-      showEditForm: false,
   }, this.props.initialState);
 
   componentWillUpdate = this.props.onState || undefined;
@@ -55,39 +53,8 @@ export default class App extends Component {
     });
   };
 
-  editItem=(e)=>{
-    e.preventDefault()
-    this.setState({showEditForm:true})
-    console.log('edit')
-
-  }
-
-  handleEdit=(e)=>{
-    e.preventDefault()
-    console.log('handle edit')
-  }
-
-  // editForm =(i)=>{
-  //   return (
-  //     <form onSubmit={()=>this.handleEdit(i)} style={{display: this.state.showEditForm? 'display':'none'}}>
-  //           <TextField
-  //               id="newTask"
-  //               label="Name"
-  //               value={this.state.newTask}
-  //               required
-  //               onChange={this.handleChange('newTask')}
-  //             />
-  //             <button type='submit'>New</button>
-  //     </form>
-  //   )
-  // }
-
-
-
 
   render() {
-
-
     return (
       <div className="App">
         <header className="App-header">
@@ -122,28 +89,12 @@ export default class App extends Component {
                   <ListItem button>
                     <ListItemText primary={task.name} />
                     <ListItemText primary={`${task.points} Points Importance`}/>
-                    <form onSubmit={()=>this.handleEdit(i)} style={{display: this.state.showEditForm? 'display':'none'}}>
-            <TextField
-                id="newTask"
-                label="Name"
-                value={this.state.newTask}
-                required
-                onChange={this.handleChange('newTask')}
-              />
-              <button type='submit'>New</button>
-      </form>
-                      <IconButton
-                        aria-label="Edit Importance"
-                        onClick={(e)=>this.editItem(e,i)}
-                      >
-                        <EditIcon />
-                      </IconButton>
                     <ListItemSecondaryAction>
                       <IconButton
                         aria-label="Delete"
                         onClick={this.deleteItem(i)}
                       >
-                        <DeleteIcon />
+                      <DeleteIcon />
                       </IconButton>
                     </ListItemSecondaryAction>
                   </ListItem>
