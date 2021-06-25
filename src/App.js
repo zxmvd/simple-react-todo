@@ -3,6 +3,7 @@ import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import AddIcon from '@material-ui/icons/Add';
 import DeleteIcon from '@material-ui/icons/Delete';
+import EditIcon from '@material-ui/icons/Edit';
 import Grid from '@material-ui/core/Grid';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
@@ -10,12 +11,15 @@ import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import ListItemText from '@material-ui/core/ListItemText';
 import TextField from '@material-ui/core/TextField';
 import './App.css';
+import  { extractPoint } from './extractHelper'
+
 
 export default class App extends Component {
   state = Object.assign({
       newTask: '',
       newPoint: 0,
-      tasks: []
+      tasks: [],
+      showEditForm: false,
   }, this.props.initialState);
 
   componentWillUpdate = this.props.onState || undefined;
@@ -24,13 +28,23 @@ export default class App extends Component {
     this.setState({ [key]: event.target.value });
   };
 
+
   handleSubmit = event => {
     event.preventDefault();
-    const newTasks = [
-      ...this.state.tasks,
-      { name: this.state.newTask, points: this.state.newPoint }
-    ].sort((a, b)=>b.points-a.points);
-    this.setState({ tasks: newTasks, newTask: '', newPoint:0 });
+    if(extractPoint(this.state.newTask)){
+      const { name:extractedTask, points:extractedPoint} = extractPoint(this.state.newTask);
+      const newTasks = [
+        ...this.state.tasks,
+        { name: extractedTask, points: extractedPoint }
+      ].sort((a, b)=>b.points-a.points);
+      this.setState({ tasks: newTasks, newTask: '', newPoint:0 });
+    } else {
+      const newTasks = [
+        ...this.state.tasks,
+        { name: this.state.newTask, points: this.state.newPoint }
+      ].sort((a, b)=>b.points-a.points);
+      this.setState({ tasks: newTasks, newTask: '', newPoint:0 });
+    }
   };
 
   deleteItem = index => event => {
@@ -41,15 +55,34 @@ export default class App extends Component {
     });
   };
 
-  extractPoint = (str) =>{
-    let taskObj = {name:'', points:0}
-    let inputArr = str.split('')
-    let number = inputArr.filter(i=>typeof(+i)==='number')
-    const inputName = str.slice(0, inputArr.indexOf(number[0]).toString())
-    taskObj.name = inputName
-    taskObj.points = + number.join('')
-    return taskObj
+  editItem=(e)=>{
+    e.preventDefault()
+    this.setState({showEditForm:true})
+    console.log('edit')
+
   }
+
+  handleEdit=(e)=>{
+    e.preventDefault()
+    console.log('handle edit')
+  }
+
+  // editForm =(i)=>{
+  //   return (
+  //     <form onSubmit={()=>this.handleEdit(i)} style={{display: this.state.showEditForm? 'display':'none'}}>
+  //           <TextField
+  //               id="newTask"
+  //               label="Name"
+  //               value={this.state.newTask}
+  //               required
+  //               onChange={this.handleChange('newTask')}
+  //             />
+  //             <button type='submit'>New</button>
+  //     </form>
+  //   )
+  // }
+
+
 
 
   render() {
@@ -65,6 +98,7 @@ export default class App extends Component {
             id="newTask"
             label="Name"
             value={this.state.newTask}
+            required
             onChange={this.handleChange('newTask')}
           />
           <TextField
@@ -78,7 +112,7 @@ export default class App extends Component {
             <AddIcon /> Add
           </Button>
         </form>
-        <Grid container spacing={16}>
+        <Grid container spacing={10}>
           <Grid item xs={3}>
           </Grid>
           <Grid item xs={6}>
@@ -88,6 +122,22 @@ export default class App extends Component {
                   <ListItem button>
                     <ListItemText primary={task.name} />
                     <ListItemText primary={`${task.points} Points Importance`}/>
+                    <form onSubmit={()=>this.handleEdit(i)} style={{display: this.state.showEditForm? 'display':'none'}}>
+            <TextField
+                id="newTask"
+                label="Name"
+                value={this.state.newTask}
+                required
+                onChange={this.handleChange('newTask')}
+              />
+              <button type='submit'>New</button>
+      </form>
+                      <IconButton
+                        aria-label="Edit Importance"
+                        onClick={(e)=>this.editItem(e,i)}
+                      >
+                        <EditIcon />
+                      </IconButton>
                     <ListItemSecondaryAction>
                       <IconButton
                         aria-label="Delete"
