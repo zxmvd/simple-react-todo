@@ -16,16 +16,8 @@ npm test
 
 ## The Task
 
-You should see three failing tests, your job is the following:
-
 1. Get those tests passing by implementing features described below
 2. Improve any code you think could use some love
-3. GIT commit each step
-4. Stop after 30 minutes
-
-Remember, we'd much rather see an incomplete response than nothing at all. Wherever you get to in the time limit, commit and push it.
-
-Good luck!
 
 ## Feature One
 
