@@ -11,6 +11,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import TextField from '@material-ui/core/TextField';
 import './App.css';
 import  { extractPoint } from './extractHelper'
+import EditPoint from './EditPoint'
 
 
 export default class App extends Component {
@@ -89,6 +90,7 @@ export default class App extends Component {
                   <ListItem button>
                     <ListItemText primary={task.name} />
                     <ListItemText primary={`${task.points} Points Importance`}/>
+                    <EditPoint />
                     <ListItemSecondaryAction>
                       <IconButton
                         aria-label="Delete"
@@ -101,6 +103,7 @@ export default class App extends Component {
                 </div>
               )}
             </List>
+            <EditPoint />
           </Grid>
         </Grid>
       </div>
