@@ -54,6 +54,17 @@ export default class App extends Component {
     });
   };
 
+  handleEdit = (i, p)=>{
+    console.log(i,p)
+    let newTasks = this.state.tasks.map((task, index)=>(
+      index===i?
+      {...task, points:+p}
+      : task
+    ))
+    this.setState({tasks:newTasks})
+
+  }
+
 
   render() {
     return (
@@ -89,8 +100,8 @@ export default class App extends Component {
                 <div key={i} className={task.points>10? "critical":"normal"}>
                   <ListItem button>
                     <ListItemText primary={task.name} />
-                    <ListItemText primary={`${task.points} Points Importance`}/>
-                    <EditPoint />
+                    <EditPoint handleEdit={this.handleEdit} points={task.points} index={i}/>
+                    <ListItemText primary={`${task.points} Points Importance`} />
                     <ListItemSecondaryAction>
                       <IconButton
                         aria-label="Delete"
@@ -103,7 +114,6 @@ export default class App extends Component {
                 </div>
               )}
             </List>
-            <EditPoint />
           </Grid>
         </Grid>
       </div>
